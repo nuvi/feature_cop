@@ -17,7 +17,7 @@ Or install it yourself as:
 
 ## Basic Usage - Ruby
 
-Add a features to your ENV
+Add features definitions to your ENV
 
 ```
 MY_COOL_FEATURE = enabled
@@ -28,7 +28,7 @@ NOTE:
 Adding key values pairs to your ENV can be done in a number of ways. The above way is using .env file in conjuction with the [dot-env gem](https://github.com/bkeepers/dotenv)
 
 
-## Use FeatureCop.allows? in your ruby code
+Use FeatureCop.allows? in your ruby code
 
 ```ruby
 
@@ -70,6 +70,8 @@ Because javascript patterns & frameworks vary wildly and change often, we have o
 ```
 
 Boom! Now you have feature flags!
+
+For more advanced usage, [see our wiki](https://github.com/nuvi/feature_cop/wiki)!
 
 
 
