@@ -29,7 +29,9 @@ end
 
 ## Basic Usage - Javascript
 
-If you want use your feature flags in your client side javascript, you can call ```FeatureCop.to_json```.  This will serialize all of the feature flag values to json so they can be sent to the client.  Notice that it inflects the names to make them javascript friendly.  Also, it simply puts assigns the value of the boolean value to that you don't have to do any string comparison in your client side code.  You can simply check to see if you should show the feature or not.
+If you want feature flags in client side javascript, call ```FeatureCop.to_json```.  This creates a JSON representation of the features so they can be sent to the client.  
+
+Notice: Feature names are converted to camelcase.  Also, values are converted to boolean values.
 
 ```
 FeatureCop.to_json
