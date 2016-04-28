@@ -42,7 +42,7 @@ end
 
 ## Basic Usage - Javascript
 
-To use features in client side javascript, call ```FeatureCop.to_json```.  This creates a JSON representation of the features so they can be sent to the client.  
+To use features in client side javascript, use  the ```FeatureCop.to_json``` helper.  This creates a JSON representation of the features so they can be sent to the client.  
 
 Notice: Feature names are converted to camelcase.  Also, values are converted to boolean values.
 
