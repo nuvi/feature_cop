@@ -18,14 +18,20 @@ module FeatureCop
         self.blacklist = ::YAML.load_file(absolute_path)[env]      
       end
 
-      def blacklist(identifier)
+      def all_except_blacklist(identifier)
         return true if @blacklist.nil?
         !@blacklist.include?(identifier)
+      end
+
+
+      def blacklist
+        @blacklist 
       end
 
       def blacklist=(blacklist)
         @blacklist = blacklist
       end
+
     end
   end
 end

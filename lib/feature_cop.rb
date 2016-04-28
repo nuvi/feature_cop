@@ -21,6 +21,10 @@ module FeatureCop
     true
   end
 
+  def self.disabled(identifier)
+    false
+  end
+
   def self.env
     @env ||= ENV["RAILS_ENV"] || ENV["RACK_ENV"] || ENV["APP_ENV"] || ENV["APP_ENV"] || "development"
   end

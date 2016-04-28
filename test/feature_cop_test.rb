@@ -11,12 +11,17 @@ class FeatureCopTest < Minitest::Test
     assert FeatureCop.allows?(:random_feature, "SOME IDENTIFIER")
   end
 
+  def test_disabled_features_are_always_false
+    ENV["RANDOM_FEATURE"] = "disabled"
+    refute FeatureCop.allows?(:random_feature, "SOME IDENTIFIER")
+  end
+
   def test_unidentified_features_are_always_false
     refute FeatureCop.allows?(:unidentified_feature, "SOME IDENTIFIER")
   end
 
   def test_whitelisted_features_are_true_when_they_are_in_the_white_list
-    ENV["WHITELIST_FEATURE"] = "whitelist"
+    ENV["WHITELIST_FEATURE"] = "whitelist_only"
     refute FeatureCop.allows?(:whitelist_feature, "GOOD_GUY")
 
     FeatureCop.whitelist = ["GOOD_GUY"] 
@@ -24,7 +29,7 @@ class FeatureCopTest < Minitest::Test
   end
 
   def test_blacklisted_features_are_true_when_they_are_not_in_the_white_list
-    ENV["BLACKLIST_FEATURE"] = "blacklist"
+    ENV["BLACKLIST_FEATURE"] = "all_except_blacklist"
     assert FeatureCop.allows?(:blacklist_feature, "BAD GUY")
 
     FeatureCop.blacklist = ["BAD GUY"] 
@@ -64,13 +69,12 @@ class FeatureCopTest < Minitest::Test
 
   def test_whitelist_can_be_configured_from_yml
     FeatureCop.whitelist_from_yaml(File.join(__dir__, "sample_feature_cop.yml"))
-    assert FeatureCop.whitelist("user_1")
+    assert FeatureCop.whitelist.include?("user_1")
   end
-
 
   def test_blacklist_can_be_configured_from_yml
     FeatureCop.blacklist_from_yaml(File.join(__dir__, "sample_feature_cop.yml"))
-    refute FeatureCop.blacklist("user_1")
+    assert FeatureCop.blacklist.include?("user_1")
   end
 
 end

@@ -18,13 +18,17 @@ module FeatureCop
         self.whitelist = ::YAML.load_file(absolute_path)[env]      
       end
 
-      def whitelist(identifier)
-        return false if @whitelist.nil?
-        @whitelist.include?(identifier)
+      def whitelist
+        @whitelist
       end
 
       def whitelist=(whitelist)
         @whitelist = whitelist
+      end
+
+      def whitelist_only(identifier)
+        return false if @whitelist.nil?
+        @whitelist.include?(identifier)
       end
     end
   end
