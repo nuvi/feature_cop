@@ -9,8 +9,6 @@ Feature cop is a simple feature toggling system for Ruby. All features are confi
 ```
 MY_COOL_FEATURE = enabled
 LOGIN_V2_FEATURE = disabled
-MENUBAR_V3_FEATURE = sample10
-
 ```
 
 NOTE:
