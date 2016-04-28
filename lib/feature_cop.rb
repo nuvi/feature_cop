@@ -3,6 +3,7 @@ require "feature_cop/enumerable_extensions"
 require "feature_cop/whitelist"
 require "feature_cop/blacklist"
 require "json"
+require "yaml"
 
 
 
@@ -18,6 +19,10 @@ module FeatureCop
 
   def self.enabled(identifier)
     true
+  end
+
+  def self.env
+    @env ||= ENV["RAILS_ENV"] || ENV["RACK_ENV"] || ENV["APP_ENV"] || ENV["APP_ENV"] || "development"
   end
 
   def self.features

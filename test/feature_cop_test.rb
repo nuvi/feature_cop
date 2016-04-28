@@ -62,4 +62,15 @@ class FeatureCopTest < Minitest::Test
     assert FeatureCop.to_json("d").include?("\"JSON_FEATURE\":true")
   end
 
+  def test_whitelist_can_be_configured_from_yml
+    FeatureCop.whitelist_from_yaml(File.join(__dir__, "sample_feature_cop.yml"))
+    assert FeatureCop.whitelist("user_1")
+  end
+
+
+  def test_blacklist_can_be_configured_from_yml
+    FeatureCop.blacklist_from_yaml(File.join(__dir__, "sample_feature_cop.yml"))
+    refute FeatureCop.blacklist("user_1")
+  end
+
 end
