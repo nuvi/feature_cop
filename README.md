@@ -2,9 +2,22 @@
 
 Feature cop is a simple feature toggling system for Ruby. All features are configured in the ENV, following the guidelines of a [12-Factor App](http://12factor.net/config)
 
+## Installation
+
+Using Bundler
+
+```ruby
+gem 'feature_cop'
+
+```
+Or install it yourself as:
+
+    $ gem install feature_cop
+
+
 ## Basic Usage - Ruby
 
-#### Step 1 - Add a features to your ENV
+Add a features to your ENV
 
 ```
 MY_COOL_FEATURE = enabled
@@ -15,7 +28,7 @@ NOTE:
 Adding key values pairs to your ENV can be done in a number of ways. The above way is using .env file in conjuction with the [dot-env gem](https://github.com/bkeepers/dotenv)
 
 
-#### Step 2 - Start using Feature Cop
+## Use FeatureCop.allows? in your ruby code
 
 ```ruby
 
@@ -29,7 +42,7 @@ end
 
 ## Basic Usage - Javascript
 
-If you want feature flags in client side javascript, call ```FeatureCop.to_json```.  This creates a JSON representation of the features so they can be sent to the client.  
+To use features in client side javascript, call ```FeatureCop.to_json```.  This creates a JSON representation of the features so they can be sent to the client.  
 
 Notice: Feature names are converted to camelcase.  Also, values are converted to boolean values.
 
@@ -45,21 +58,19 @@ FeatureCop.to_json
 
 ```
 
-Boom! Now you have feature flags!
+Because javascript patterns & frameworks vary wildly and change often, we have opted not to provide any furtuer javascript helpers.  The easiset way to use FeatureCop in your client side is to get features into window.env, then you can use simple if statements to control features.
 
-
-## Installation
-
-Using Bundler
-
-```ruby
-gem 'feature_cop'
-
+```javascript
+ if(window.env.features.myCoolFeature === true) {
+   // execute new feature code
+ }else
+ {
+   // execute new feature code
+ }
 ```
 
-Or install it yourself as:
+Boom! Now you have feature flags!
 
-    $ gem install feature_cop
 
 
 
