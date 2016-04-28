@@ -1,32 +1,80 @@
 # FeatureCop
 
-Feature cop is a simple feature toggling system for Ruby. Features are configured in the ENV, following the guidelines of a [12-Factor App](http://12factor.net/config)
+Feature cop is a simple feature toggling system for Ruby. All features are configured in the ENV, following the guidelines of a [12-Factor App](http://12factor.net/config)
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Using Bundler
 
 ```ruby
 gem 'feature_cop'
 
 ```
-
-And then execute:
-
-    $ bundle
-
 Or install it yourself as:
 
     $ gem install feature_cop
 
-## Usage
 
-Feature Cop has the following features
-## Development
+## Basic Usage - Ruby
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+Add features definitions to your ENV
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```
+MY_COOL_FEATURE = enabled
+LOGIN_V2_FEATURE = disabled
+```
+
+NOTE:
+Adding key values pairs to your ENV can be done in a number of ways. The above way is using .env file in conjuction with the [dot-env gem](https://github.com/bkeepers/dotenv)
+
+
+Use FeatureCop.allows? in your ruby code
+
+```ruby
+
+if FeatureCop.allows?(:my_cool_feature)
+   # execute new feature code
+else
+   # execute old feature code
+end
+```
+
+
+## Basic Usage - Javascript
+
+To use features in client side javascript, use  the ```FeatureCop.to_json``` helper.  This creates a JSON representation of the features so they can be sent to the client.  
+
+Notice: Feature names are converted to camelcase.  Also, values are converted to boolean values.
+
+```
+FeatureCop.to_json
+#=>
+{
+
+  "myCoolFeature"     : true
+  "loginV1Feature"    : false
+   "menubarV3Feature" : true
+}
+
+```
+
+Because javascript patterns & frameworks vary wildly and change often, we have opted not to provide any furtuer javascript helpers.  The easiset way to use FeatureCop in your client side is to get features into window.env, then you can use simple if statements to control features.
+
+```javascript
+ if(window.env.features.myCoolFeature === true) {
+   // execute new feature code
+ }else
+ {
+   // execute new feature code
+ }
+```
+
+Boom! Now you have feature flags!
+
+For more advanced usage, [see our wiki](https://github.com/nuvi/feature_cop/wiki)!
+
+
+
 
 ## Contributing
 
