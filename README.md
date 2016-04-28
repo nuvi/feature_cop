@@ -2,16 +2,7 @@
 
 Feature cop is a simple feature toggling system for Ruby. All features are configured in the ENV, following the guidelines of a [12-Factor App](http://12factor.net/config)
 
-Features can have a value of
-- enabled
-- disabled
-- sample10
-- sample25
-- sample50
-- whitelist_only
-- all_except_blacklist
-
-## Basic Usage
+## Basic Usage - Ruby
 
 #### Step 1 - Add a features to your ENV
 
@@ -37,6 +28,22 @@ else
 end
 ```
 
+
+## Basic Usage - Javascript
+
+If you want use your feature flags in your client side javascript, you can call ```FeatureCop.to_json```.  This will serialize all of the feature flag values to json so they can be sent to the client.  Notice that it inflects the names to make them javascript friendly.  Also, it simply puts assigns the value of the boolean value to that you don't have to do any string comparison in your client side code.  You can simply check to see if you should show the feature or not.
+
+```
+FeatureCop.to_json
+#=>
+{
+
+  "myCoolFeature"     : true
+  "loginV1Feature"    : false
+   "menubarV3Feature" : true
+}
+
+```
 
 Boom! Now you have feature flags!
 
