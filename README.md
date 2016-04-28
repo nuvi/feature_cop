@@ -1,6 +1,6 @@
 # FeatureCop
 
-Feature cop is a simple feature toggling system for Ruby. It provides progressive roll out of features. A common (and my opinion, bad) practice is for developers to use branching as feature control.  Feature Branching leads to humongous pull requests, messy merges, and long integrations.  With continous integration and feature toggling everyone can make small, short lived branches off the mainline, continually merge code, and get code in production even when it isn't ready for launch. 
+FeatureCop is a simple feature toggling system for Ruby. It provides progressive roll out of features. A common (and my opinion, bad) practice is for developers to use branching as feature control.  Feature Branching leads to humongous pull requests, messy merges, and long integrations.  With continous integration and feature toggling everyone can make small, short lived branches off the mainline, continually merge code, and get code in production even when it isn't ready for launch. 
 
 The following roll out strategies is available:
 
