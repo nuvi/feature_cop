@@ -1,32 +1,60 @@
 # FeatureCop
 
-Feature cop is a simple feature toggling system for Ruby. Features are configured in the ENV, following the guidelines of a [12-Factor App](http://12factor.net/config)
+Feature cop is a simple feature toggling system for Ruby. All features are configured in the ENV, following the guidelines of a [12-Factor App](http://12factor.net/config)
+
+Features can have a value of
+- enabled
+- disabled
+- sample10
+- sample25
+- sample50
+- whitelist_only
+- all_except_blacklist
+
+## Basic Usage
+
+#### Step 1 - Add a features to your ENV
+
+```
+MY_COOL_FEATURE = enabled
+LOGIN_V2_FEATURE = disabled
+MENUBAR_V3_FEATURE = sample10
+
+```
+
+NOTE:
+Adding key values pairs to your ENV can be done in a number of ways. The above way is using .env file in conjuction with the [dot-env gem](https://github.com/bkeepers/dotenv)
+
+
+#### Step 2 - Start using Feature Cop
+
+```ruby
+
+if FeatureCop.allows?(:my_cool_feature)
+   # execute new feature code
+else
+   # execute old feature code
+end
+```
+
+
+Boom! Now you have feature flags!
+
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Using Bundler
 
 ```ruby
 gem 'feature_cop'
 
 ```
 
-And then execute:
-
-    $ bundle
-
 Or install it yourself as:
 
     $ gem install feature_cop
 
-## Usage
 
-Feature Cop has the following features
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
