@@ -1,0 +1,8 @@
+development:
+  my_awesome_feature: enabled 
+
+stage:
+  my_awesome_feature: whitelist_only
+
+prod:
+  my_awesome_feature: disabled

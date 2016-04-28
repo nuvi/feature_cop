@@ -1,3 +1,6 @@
+require "rubygems"
+require "active_support/inflector"
+require "active_support/inflections"
 require "feature_cop/version"
 require "feature_cop/enumerable_extensions"
 require "feature_cop/whitelist"
@@ -11,7 +14,7 @@ module FeatureCop
   include FeatureCop::Whitelist
   include FeatureCop::Blacklist
 
-  def self.allows?(feature, identifier, opts = {})
+  def self.allows?(feature, identifier = nil, opts = {})
     feature_status = ENV["#{feature.to_s.upcase}"]
     return false if feature_status.nil? 
     self.method(feature_status.downcase).call(identifier)
@@ -57,10 +60,10 @@ module FeatureCop
     return features
   end
   
-  def self.to_json(identifier)
+  def self.to_json(identifier = nil)
     feature_set = {}
     features.each_pair do |key, value|
-      feature_set[key] = self.method(value.downcase).call(identifier)  
+      feature_set[key.downcase.camelize(:lower)] = self.method(value.downcase).call(identifier)  
     end
     feature_set.to_json
   end
