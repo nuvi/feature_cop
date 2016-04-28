@@ -1,8 +1,8 @@
-require "feature_board/version"
-require "feature_board/enumerable_extensions"
+require "feature_cop/version"
+require "feature_cop/enumerable_extensions"
 require "json"
 
-module FeatureBoard
+module FeatureCop
 
   def self.features
     @features ||= self.get_features

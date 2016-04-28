@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'feature_board/version'
+require 'feature_cop/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "feature_board"
-  spec.version       = FeatureBoard::VERSION
+  spec.name          = "feature_cop"
+  spec.version       = FeatureCop::VERSION
   spec.authors       = ["Brett Allred"]
   spec.email         = ["brettallred@gmail.com"]
 
   spec.summary       = %q{A simple gem for handing feature flagging in ruby}
   spec.description   = %q{A simple gem for handing feature flagging in ruby}
-  spec.homepage      = "http://www.github.com/nuvi/feature_board"
+  spec.homepage      = "http://www.github.com/nuvi/feature_cop"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }

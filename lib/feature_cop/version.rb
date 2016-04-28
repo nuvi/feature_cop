@@ -1,3 +1,3 @@
-module FeatureBoard
+module FeatureCop
   VERSION = "0.1.0"
 end
