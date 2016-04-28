@@ -65,17 +65,16 @@ class FeatureCopTest < Minitest::Test
   def test_features_can_be_converted_to_json
     ENV["JSON_FEATURE"] = "sample50"
     FeatureCop.reset_features
-    puts "**"
-    puts FeatureCop.to_json("d") #.include?("\"jsonFeature\":true")
+    FeatureCop.to_json("d").include?("\"jsonFeature\":true")
   end
 
-  def test_whitelist_can_be_configured_from_yml
-    FeatureCop.whitelist_from_yaml(File.join(__dir__, "sample_feature_cop.yml"))
+  def test_whitelist_can_be_configured_from_yml_with_custom_path
+    FeatureCop.whitelist_from_yaml(File.join(__dir__, "sample_access_list.yml"))
     assert FeatureCop.whitelist.include?("user_1")
   end
 
   def test_blacklist_can_be_configured_from_yml
-    FeatureCop.blacklist_from_yaml(File.join(__dir__, "sample_feature_cop.yml"))
+    FeatureCop.blacklist_from_yaml(File.join(__dir__, "sample_access_list.yml"))
     assert FeatureCop.blacklist.include?("user_1")
   end
 
