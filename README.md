@@ -1,6 +1,17 @@
 # FeatureCop
 
-Feature cop is a simple feature toggling system for Ruby. All features are configured in the ENV, following the guidelines of a [12-Factor App](http://12factor.net/config)
+Feature cop is a simple feature toggling system for Ruby. It provides progressive roll out of features. A common (and my opinion, bad) practice is for developers to use branching as feature control.  Feature Branching leads to humongous pull requests, messy merges, and long integrations.  With continous integration and feature toggling everyone can make small, short lived branches off the mainline, continually merge code, and get code in production even when it isn't ready for launch. 
+
+The following roll out strategy is assumed but not required.
+
+1. disabled - during development, a feature can completely disabled so it isn't seen or executed.
+2. whitelist_only - features can be turned on for specific users or groups.  For example, QA users can be whitelisted, then a small group of customers, etc.
+3. sample10 - feature is enabled for roughly 10% of users
+4. sample25 - feature is enabled for rougly 25% of users
+5. sample50 - feature is enabled for rougly 50% of users
+6. all_except_blacklist - feature is enabled for everyone except for a specified list of customers.  These customers could be enterprise clients that must be notified before enabling new features, etc.
+6. enabled - enabled for all customers.  At this point it is recommended to remove the feature flag from the system as the roll out is complete.
+
 
 ## Installation
 
@@ -16,6 +27,8 @@ Or install it yourself as:
 
 
 ## Basic Usage - Ruby
+
+All features are configured in your applications ENV, following the guidelines of a [12-Factor App](http://12factor.net/config)
 
 Add features definitions to your ENV
 
