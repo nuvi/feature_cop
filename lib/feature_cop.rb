@@ -1,40 +1,31 @@
 require "feature_cop/version"
 require "feature_cop/enumerable_extensions"
+require "feature_cop/whitelist"
+require "feature_cop/blacklist"
 require "json"
 
+
+
 module FeatureCop
+  include FeatureCop::Whitelist
+  include FeatureCop::Blacklist
+
+  def self.allows?(feature, identifier, opts = {})
+    feature_status = ENV["#{feature.to_s.upcase}"]
+    return false if feature_status.nil? 
+    self.method(feature_status.downcase).call(identifier)
+  end
+
+  def self.enabled(identifier)
+    true
+  end
 
   def self.features
-    @features ||= self.get_features
+    @features ||= self.set_features
   end
 
   def self.reset_features
-    @features = self.get_features
-  end
-
-  def self.get_features
-    features = {}
-    ENV.each_pair do |key, value|
-      features[key] = value if key.end_with?("_FEATURE")
-    end
-    return features
-  end
-
-  def self.method_missing(m, *args, &block)
-    feature_name = m.to_s
-    filters = ["?", "show_", "_feature"]
-    filters.each { |filter| feature_name.gsub!(filter, "") }
-    feature_status = ENV["#{feature_name.upcase}_FEATURE"]
-    return false if feature_status.nil? 
-    self.method(feature_status.downcase).call(args.first)
-  end
-
-  def self.enabled(indentifier)
-    true
-  end
-
-  def self.whitelist(indentifier)
-    true
+    @features = self.set_features
   end
 
   def self.sample10(identifier)
@@ -47,6 +38,14 @@ module FeatureCop
 
   def self.sample50(identifier)
     identifier.bytes.sum % 2 == 0 
+  end
+
+  def self.set_features
+    features = {}
+    ENV.each_pair do |key, value|
+      features[key] = value if key.end_with?("_FEATURE")
+    end
+    return features
   end
   
   def self.to_json(identifier)
