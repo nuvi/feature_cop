@@ -7,7 +7,7 @@ The following roll out strategies is available:
 1. **disabled** - during development, a feature can completely disabled so it isn't seen or executed.
 2. **whitelist_only** - features can be turned on for specific users or groups.  For example, QA users can be whitelisted, then a small group of customers, etc.
 3. **sample10** - feature is enabled for roughly 10% of users
-4. **sample25** - feature is enabled for rougly 25% of users
+4. **sample30** - feature is enabled for rougly 30% of users
 5. **sample50** - feature is enabled for rougly 50% of users
 6. **all_except_blacklist** - feature is enabled for everyone except for a specified list of customers.  These customers could be enterprise clients that must be notified before enabling new features, etc.
 6. **enabled** - enabled for all customers.  At this point it is recommended to remove the feature flag from the system as the roll out is complete.
@@ -50,7 +50,7 @@ else
 end
 ```
 
-You can also pass a string identifier to FeatureCop.  Identifiers can be anything but are typicall a user_id or a group_id.  Identifiers are used for the whitelist, sample10, sample25, sample50, and blacklist feature types.
+You can also pass a string identifier to FeatureCop.  Identifiers can be anything but are typicall a user_id or a group_id.  Identifiers are used for the whitelist, sample10, sample30, sample50, and blacklist feature types.
 
 ```ruby
 

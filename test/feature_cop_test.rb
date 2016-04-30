@@ -43,10 +43,10 @@ class FeatureCopTest < Minitest::Test
     refute FeatureCop.allows?(:sample10_feature, "a")
   end
 
-  def test_sample25_features_are_true_1_out_4_times
-    ENV["SAMPLE25_FEATURE"] = "sample25"
-    assert FeatureCop.allows?(:sample25_feature, "d")
-    refute FeatureCop.allows?(:sample25_feature, "a")
+  def test_sample30_features_are_true_1_out_4_times
+    ENV["SAMPLE30_FEATURE"] = "sample30"
+    assert FeatureCop.allows?(:sample30_feature, "d")
+    refute FeatureCop.allows?(:sample30_feature, "a")
   end
 
   def test_sample50_features_are_true_1_out_2_times
@@ -77,5 +77,4 @@ class FeatureCopTest < Minitest::Test
     FeatureCop.blacklist_from_yaml(File.join(__dir__, "sample_access_list.yml"))
     assert FeatureCop.blacklist.include?("user_1")
   end
-
 end

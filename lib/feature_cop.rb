@@ -44,12 +44,13 @@ module FeatureCop
     identifier.bytes.sum % 10 == 0 
   end
 
-  def self.sample25(identifier)
-    identifier.bytes.sum % 4 == 0 
+  def self.sample30(identifier)
+    puts identifier.bytes.sum
+    identifier.bytes.sum % 3 == 0 
   end
 
   def self.sample50(identifier)
-    identifier.bytes.sum % 2 == 0 
+    identifier.bytes.sum.odd? 
   end
 
   def self.set_features
