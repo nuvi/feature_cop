@@ -1,16 +1,16 @@
 # FeatureCop
 
-FeatureCop is a simple feature toggling system for Ruby. It provides progressive roll out of features. A common (and my opinion, bad) practice is for developers to use branching as feature control.  Feature Branching leads to humongous pull requests, messy merges, and long integrations.  With continous integration and feature toggling everyone can make small, short lived branches off the mainline, continually merge code, and get code in production even when it isn't ready for launch. 
+FeatureCop is a simple feature toggling system for Ruby. It provides progressive roll out of features. A common (and my opinion, bad) practice is for developers to use branching as feature control.  Feature Branching leads to large pull requests, messy merges, and long integration cycles.  With continous integration and feature toggling everyone can make small, short lived branches off the mainline, continually merge code, and get code in production, even when it isn't ready for launch. 
 
 The following roll out strategies is available:
 
-1. **disabled** - during development, a feature can completely disabled so it isn't seen or executed.
-2. **whitelist_only** - features can be turned on for specific users or groups.  For example, QA users can be whitelisted, then a small group of customers, etc.
+1. **disabled** - during development, a feature can be completely disabled so it isn't seen or executed.
+2. **whitelist_only** - features can be turned on for specific users or groups.
 3. **sample10** - feature is enabled for roughly 10% of users
 4. **sample30** - feature is enabled for rougly 30% of users
 5. **sample50** - feature is enabled for rougly 50% of users
-6. **all_except_blacklist** - feature is enabled for everyone except for a specified list of customers.  These customers could be enterprise clients that must be notified before enabling new features, etc.
-6. **enabled** - enabled for all customers.  At this point it is recommended to remove the feature flag from the system as the roll out is complete.
+6. **all_except_blacklist** - feature is enabled for everyone except a specified list of customers.  These customers could be enterprise clients that must be notified before enabling new features, etc.
+6. **enabled** - enabled for all customers.  At this point it is recommended to remove the feature flag from the system since the roll out is complete.
 
 
 ## Installation
