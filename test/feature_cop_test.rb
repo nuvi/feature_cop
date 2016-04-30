@@ -45,14 +45,14 @@ class FeatureCopTest < Minitest::Test
 
   def test_sample30_features_are_true_1_out_4_times
     ENV["SAMPLE30_FEATURE"] = "sample30"
-    assert FeatureCop.allows?(:sample30_feature, "d")
+    assert FeatureCop.allows?(:sample30_feature, "c")
     refute FeatureCop.allows?(:sample30_feature, "a")
   end
 
   def test_sample50_features_are_true_1_out_2_times
     ENV["SAMPLE50_FEATURE"] = "sample50"
-    assert FeatureCop.allows?(:sample50_feature, "d")
-    refute FeatureCop.allows?(:sample50_feature, "a")
+    assert FeatureCop.allows?(:sample50_feature, "c")
+    refute FeatureCop.allows?(:sample50_feature, "b")
   end
 
   def test_features_are_taken_from_env

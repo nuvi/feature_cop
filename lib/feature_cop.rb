@@ -45,7 +45,6 @@ module FeatureCop
   end
 
   def self.sample30(identifier)
-    puts identifier.bytes.sum
     identifier.bytes.sum % 3 == 0 
   end
 
