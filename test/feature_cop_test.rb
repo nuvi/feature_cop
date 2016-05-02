@@ -29,30 +29,52 @@ class FeatureCopTest < Minitest::Test
     assert FeatureCop.allows?(:whitelist_feature, "GOOD_GUY")
   end
 
-  def test_blacklisted_features_are_true_when_they_are_not_in_the_white_list
+  def test_blacklisted_features_are_false_when_they_are_in_the_black_list
     ENV["BLACKLIST_FEATURE"] = "all_except_blacklist"
     assert FeatureCop.allows?(:blacklist_feature, "BAD GUY")
 
     FeatureCop.blacklist = ["BAD GUY"] 
     refute FeatureCop.allows?(:blacklist_feature, "BAD GUY")
+    assert FeatureCop.allows?(:blacklist_feature, "GOOD_GUY")
   end
 
-  def test_sample10_features_are_true_1_out_10_times
+  def test_sample10_features_are_true_for_roughly_ten_percent_of_users
     ENV["SAMPLE10_FEATURE"] = "sample10"
-    assert FeatureCop.allows?(:sample10_feature, "d")
-    refute FeatureCop.allows?(:sample10_feature, "a")
+
+    true_count = 0
+
+    1000.times do |count|
+      true_count += 1 if FeatureCop.allows?(:sample10_feature, SecureRandom.hex)
+    end
+
+    assert  true_count  > 70
+    assert  true_count < 130
   end
 
-  def test_sample30_features_are_true_1_out_4_times
+  def test_sample30_features_are_true_for_roughty_thirty_percent_of_users
     ENV["SAMPLE30_FEATURE"] = "sample30"
-    assert FeatureCop.allows?(:sample30_feature, "c")
-    refute FeatureCop.allows?(:sample30_feature, "a")
+
+    true_count = 0
+
+    1000.times do |count|
+      true_count += 1 if FeatureCop.allows?(:sample30_feature, SecureRandom.hex)
+    end
+
+    assert  true_count > 240
+    assert  true_count < 360
   end
 
-  def test_sample50_features_are_true_1_out_2_times
+  def test_sample50_features_are_true_for_roughly_50_percent_of_users
     ENV["SAMPLE50_FEATURE"] = "sample50"
-    assert FeatureCop.allows?(:sample50_feature, "c")
-    refute FeatureCop.allows?(:sample50_feature, "b")
+
+    true_count = 0
+
+    1000.times do |count|
+      true_count += 1 if FeatureCop.allows?(:sample50_feature, SecureRandom.hex)
+    end
+
+    assert  true_count > 440
+    assert  true_count < 560
   end
 
   def test_features_are_taken_from_env
