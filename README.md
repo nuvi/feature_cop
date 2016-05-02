@@ -6,10 +6,11 @@ The following roll out strategies is available:
 
 1. **disabled** - during development, a feature can be completely disabled so it isn't seen or executed.
 2. **whitelist_only** - features can be turned on for specific users or groups.
-3. **sample10** - feature is enabled for roughly 10% of users
-4. **sample30** - feature is enabled for rougly 30% of users
-5. **sample50** - feature is enabled for rougly 50% of users
-6. **all_except_blacklist** - feature is enabled for everyone except a specified list of customers.  These customers could be enterprise clients that must be notified before enabling new features, etc.
+3. **sample10** - feature is enabled for roughly 10% of ids (statistically this ranges from 7% - 13%), includes whitelisted ids and excludes blacklisted ids
+4. **sample30** - feature is enabled for roughly 30% of ids (statistically this ranges from 24% - 36%), includes whitelisted ids and excludes blacklisted ids
+5. **sample50** - feature is enabled for roughly 50% of ids (statistically this ranges from 44% - 56%), includes whitelisted ids and excludes blacklisted ids
+
+6. **all_except_blacklist** - feature is enabled for everyone except a specified list of ids.  These customers could be enterprise clients that must be notified before enabling new features, etc.
 6. **enabled** - enabled for all customers.  At this point it is recommended to remove the feature flag from the system since the roll out is complete.
 
 

@@ -8,7 +8,6 @@ module FeatureCop
     module ClassMethods
 
       def whitelist_from_yaml(file = "feature_cop_whitelist.yml")
-
         if ::File.exists?(file)
           absolute_path = file       
         elsif defined?(Rails)
@@ -28,6 +27,10 @@ module FeatureCop
       end
 
       def whitelist_only(identifier)
+        whitelisted?(identifier)
+      end
+
+      def whitelisted?(identifier)
         return false if @whitelist.nil?
         @whitelist.include?(identifier)
       end

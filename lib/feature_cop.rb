@@ -41,14 +41,20 @@ module FeatureCop
   end
 
   def self.sample10(identifier)
+    return true if whitelisted?(identifier)
+    return false if blacklisted?(identifier)
     identifier.bytes.sum % 10 == 0 
   end
 
   def self.sample30(identifier)
+    return true if whitelisted?(identifier)
+    return false if blacklisted?(identifier)
     identifier.bytes.sum % 3 == 0 
   end
 
   def self.sample50(identifier)
+    return true if whitelisted?(identifier)
+    return false if blacklisted?(identifier)
     identifier.bytes.sum.odd? 
   end
 

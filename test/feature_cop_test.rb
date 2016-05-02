@@ -23,6 +23,7 @@ class FeatureCopTest < Minitest::Test
 
   def test_whitelisted_features_are_true_when_they_are_in_the_white_list
     ENV["WHITELIST_FEATURE"] = "whitelist_only"
+    FeatureCop.whitelist = []
     refute FeatureCop.allows?(:whitelist_feature, "GOOD_GUY")
 
     FeatureCop.whitelist = ["GOOD_GUY"] 
@@ -47,8 +48,8 @@ class FeatureCopTest < Minitest::Test
       true_count += 1 if FeatureCop.allows?(:sample10_feature, SecureRandom.hex)
     end
 
-    assert  true_count  > 70
-    assert  true_count < 130
+    assert  true_count  > 70, "Count: #{true_count} is less than 70"
+    assert  true_count < 130, "Count: #{true_count} is greater than 130"
   end
 
   def test_sample30_features_are_true_for_roughty_thirty_percent_of_users
@@ -60,8 +61,8 @@ class FeatureCopTest < Minitest::Test
       true_count += 1 if FeatureCop.allows?(:sample30_feature, SecureRandom.hex)
     end
 
-    assert  true_count > 240
-    assert  true_count < 360
+    assert  true_count  > 240, "Count: #{true_count} is less than 240"
+    assert  true_count  < 360, "Count: #{true_count} is greater than 360"
   end
 
   def test_sample50_features_are_true_for_roughly_50_percent_of_users
@@ -75,6 +76,31 @@ class FeatureCopTest < Minitest::Test
 
     assert  true_count > 440
     assert  true_count < 560
+  end
+
+  def test_sample_features_are_include_whitelisted_users
+    ENV["SAMPLE10_FEATURE"] = "sample10"
+    ENV["SAMPLE30_FEATURE"] = "sample30"
+    ENV["SAMPLE50_FEATURE"] = "sample50"
+
+    FeatureCop.whitelist = ["GOOD_GUY"] 
+
+    assert FeatureCop.allows?(:sample10_feature, "GOOD_GUY")
+    assert FeatureCop.allows?(:sample30_feature, "GOOD_GUY")
+    assert FeatureCop.allows?(:sample50_feature, "GOOD_GUY")
+  end
+
+
+  def test_sample_features_are_exclude_blacklist_users
+    ENV["SAMPLE10_FEATURE"] = "sample10"
+    ENV["SAMPLE30_FEATURE"] = "sample30"
+    ENV["SAMPLE50_FEATURE"] = "sample50"
+
+    FeatureCop.blacklist = ["BAD_GUY"] 
+
+    refute FeatureCop.allows?(:sample10_feature, "BAD_GUY")
+    refute FeatureCop.allows?(:sample30_feature, "BAD_GUY")
+    refute FeatureCop.allows?(:sample50_feature, "BAD_GUY")
   end
 
   def test_features_are_taken_from_env
