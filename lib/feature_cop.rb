@@ -65,13 +65,17 @@ module FeatureCop
     end
     return features
   end
-  
-  def self.to_json(identifier = nil)
+
+  def self.as_json(identifier = nil)
     feature_set = {}
     features.each_pair do |key, value|
-      feature_set[key.downcase.camelize(:lower)] = self.method(value.downcase).call(identifier)  
+      feature_set[key.downcase.camelize(:lower)] = self.method(value.downcase).call(identifier)
     end
-    feature_set.to_json
+    feature_set
+  end
+
+  def self.to_json(identifier = nil)
+    self.as_json(identifier).to_json
   end
 end
 

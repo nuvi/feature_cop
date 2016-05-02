@@ -113,7 +113,13 @@ class FeatureCopTest < Minitest::Test
   def test_features_can_be_converted_to_json
     ENV["JSON_FEATURE"] = "sample50"
     FeatureCop.reset_features
-    FeatureCop.to_json("d").include?("\"jsonFeature\":true")
+    refute FeatureCop.as_json("d")['jsonFeature']
+  end
+
+  def test_features_can_be_converted_to_json
+    ENV["JSON_FEATURE"] = "sample50"
+    FeatureCop.reset_features
+    assert FeatureCop.to_json("d").include?("\"jsonFeature\":false")
   end
 
   def test_whitelist_can_be_configured_from_yml_with_custom_path
