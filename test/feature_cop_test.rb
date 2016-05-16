@@ -21,24 +21,6 @@ class FeatureCopTest < Minitest::Test
     refute FeatureCop.allows?(:unidentified_feature, "SOME IDENTIFIER")
   end
 
-  def test_whitelisted_features_are_true_when_they_are_in_the_white_list
-    ENV["WHITELIST_FEATURE"] = "whitelist_only"
-    FeatureCop.whitelist = []
-    refute FeatureCop.allows?(:whitelist_feature, "GOOD_GUY")
-
-    FeatureCop.whitelist = ["GOOD_GUY"] 
-    assert FeatureCop.allows?(:whitelist_feature, "GOOD_GUY")
-  end
-
-  def test_blacklisted_features_are_false_when_they_are_in_the_black_list
-    ENV["BLACKLIST_FEATURE"] = "all_except_blacklist"
-    assert FeatureCop.allows?(:blacklist_feature, "BAD GUY")
-
-    FeatureCop.blacklist = ["BAD GUY"] 
-    refute FeatureCop.allows?(:blacklist_feature, "BAD GUY")
-    assert FeatureCop.allows?(:blacklist_feature, "GOOD_GUY")
-  end
-
   def test_sample10_features_are_true_for_roughly_ten_percent_of_users
     ENV["SAMPLE10_FEATURE"] = "sample10"
 
@@ -78,31 +60,6 @@ class FeatureCopTest < Minitest::Test
     assert  true_count < 560
   end
 
-  def test_sample_features_are_include_whitelisted_users
-    ENV["SAMPLE10_FEATURE"] = "sample10"
-    ENV["SAMPLE30_FEATURE"] = "sample30"
-    ENV["SAMPLE50_FEATURE"] = "sample50"
-
-    FeatureCop.whitelist = ["GOOD_GUY"] 
-
-    assert FeatureCop.allows?(:sample10_feature, "GOOD_GUY")
-    assert FeatureCop.allows?(:sample30_feature, "GOOD_GUY")
-    assert FeatureCop.allows?(:sample50_feature, "GOOD_GUY")
-  end
-
-
-  def test_sample_features_are_exclude_blacklist_users
-    ENV["SAMPLE10_FEATURE"] = "sample10"
-    ENV["SAMPLE30_FEATURE"] = "sample30"
-    ENV["SAMPLE50_FEATURE"] = "sample50"
-
-    FeatureCop.blacklist = ["BAD_GUY"] 
-
-    refute FeatureCop.allows?(:sample10_feature, "BAD_GUY")
-    refute FeatureCop.allows?(:sample30_feature, "BAD_GUY")
-    refute FeatureCop.allows?(:sample50_feature, "BAD_GUY")
-  end
-
   def test_features_are_taken_from_env
     ENV["TEST_FEATURE"] = "enabled"
     FeatureCop.reset_features
@@ -120,15 +77,5 @@ class FeatureCopTest < Minitest::Test
     ENV["JSON_FEATURE"] = "sample50"
     FeatureCop.reset_features
     assert FeatureCop.to_json("d").include?("\"jsonFeature\":false")
-  end
-
-  def test_whitelist_can_be_configured_from_yml_with_custom_path
-    FeatureCop.whitelist_from_yaml(File.join(__dir__, "sample_access_list.yml"))
-    assert FeatureCop.whitelist.include?("user_1")
-  end
-
-  def test_blacklist_can_be_configured_from_yml
-    FeatureCop.blacklist_from_yaml(File.join(__dir__, "sample_access_list.yml"))
-    assert FeatureCop.blacklist.include?("user_1")
   end
 end

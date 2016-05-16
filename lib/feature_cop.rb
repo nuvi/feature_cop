@@ -5,6 +5,8 @@ require "feature_cop/version"
 require "feature_cop/enumerable_extensions"
 require "feature_cop/whitelist"
 require "feature_cop/blacklist"
+require "feature_cop/sampling"
+require "feature_cop/toggle"
 require "json"
 require "yaml"
 
@@ -13,19 +15,13 @@ require "yaml"
 module FeatureCop
   include FeatureCop::Whitelist
   include FeatureCop::Blacklist
+  include FeatureCop::Sampling
+  include FeatureCop::Toggle
 
-  def self.allows?(feature, identifier = nil, opts = {})
+  def self.allows?(feature, identifier = nil, options = {})
     feature_status = ENV["#{feature.to_s.upcase}"]
     return false if feature_status.nil? 
-    self.method(feature_status.downcase).call(identifier)
-  end
-
-  def self.enabled(identifier)
-    true
-  end
-
-  def self.disabled(identifier)
-    false
+    self.method(feature_status.downcase).call(feature, identifier, options)
   end
 
   def self.env
@@ -40,24 +36,6 @@ module FeatureCop
     @features = self.set_features
   end
 
-  def self.sample10(identifier)
-    return true if whitelisted?(identifier)
-    return false if blacklisted?(identifier)
-    identifier.bytes.sum % 10 == 0 
-  end
-
-  def self.sample30(identifier)
-    return true if whitelisted?(identifier)
-    return false if blacklisted?(identifier)
-    identifier.bytes.sum % 3 == 0 
-  end
-
-  def self.sample50(identifier)
-    return true if whitelisted?(identifier)
-    return false if blacklisted?(identifier)
-    identifier.bytes.sum.odd? 
-  end
-
   def self.set_features
     features = {}
     ENV.each_pair do |key, value|
@@ -68,8 +46,8 @@ module FeatureCop
 
   def self.as_json(identifier = nil)
     feature_set = {}
-    features.each_pair do |key, value|
-      feature_set[key.downcase.camelize(:lower)] = self.method(value.downcase).call(identifier)
+    features.each_pair do |feature, setting|
+      feature_set[feature.downcase.camelize(:lower)] = self.method(setting.downcase).call(feature, identifier)
     end
     feature_set
   end
