@@ -23,7 +23,8 @@ class BlacklistTest < Minitest::Test
   end
 
   def test_blacklist_can_be_configured_from_yml
-    FeatureCop.blacklist_from_yaml(File.join(__dir__, "sample_access_list.yml"))
+    current_directory = File.dirname(File.realpath(__FILE__))
+    FeatureCop.blacklist_from_yaml(File.join(current_directory, "sample_access_list.yml"))
     assert FeatureCop.blacklist.include?("user_1")
   end
 end

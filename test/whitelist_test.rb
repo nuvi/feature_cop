@@ -25,7 +25,8 @@ class WhitelistTest < Minitest::Test
 
 
   def test_whitelist_can_be_configured_from_yml_with_custom_path
-    FeatureCop.whitelist_from_yaml(File.join(__dir__, "sample_access_list.yml"))
+    current_directory = File.dirname(File.realpath(__FILE__))
+    FeatureCop.whitelist_from_yaml(File.join(current_directory, "sample_access_list.yml"))
     assert FeatureCop.whitelist.include?("user_1")
   end
 
