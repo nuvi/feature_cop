@@ -1,0 +1,12 @@
+development:
+  feature1:
+  - user_1
+  - user_2
+
+  feature2:
+  - user_3
+  - user_4
+
+stage:
+
+prod:
