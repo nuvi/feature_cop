@@ -26,13 +26,13 @@ module FeatureCop
         @whitelist = whitelist
       end
 
-      def whitelist_only(identifier)
-        whitelisted?(identifier)
+      def whitelist_only(feature, identifier, options = {})
+        whitelisted?(feature, identifier, options)
       end
 
-      def whitelisted?(identifier)
-        return false if @whitelist.nil?
-        @whitelist.include?(identifier)
+      def whitelisted?(feature, identifier, options = {})
+        return false if whitelist.nil?
+        whitelist.include?(identifier)
       end
     end
   end
