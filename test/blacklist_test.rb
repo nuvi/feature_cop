@@ -25,6 +25,28 @@ class BlacklistTest < Minitest::Test
   def test_blacklist_can_be_configured_from_yml
     current_directory = File.dirname(File.realpath(__FILE__))
     FeatureCop.blacklist_from_yaml(File.join(current_directory, "sample_access_list.yml"))
-    assert FeatureCop.blacklist.include?("user_1")
+    assert FeatureCop.blacklist["default"].include?("user_1")
+  end
+
+  def test_blacklist_can_be_configured_from_yml_with_custom_path
+    ENV["SAMPLE10_FEATURE"] = "sample10"
+    current_directory = File.dirname(File.realpath(__FILE__))
+    FeatureCop.blacklist_from_yaml(File.join(current_directory, "sample_access_list.yml"))
+    assert FeatureCop.blacklist["default"].include?("user_1")
+    refute FeatureCop.allows?(:sample10_feature, "user_1")
+  end
+
+
+  def test_blacklist_configuration_can_include_multiple_features
+    ENV["FEATURE1"] = "all_except_blacklist"
+    ENV["FEATURE2"] = "all_except_blacklist"
+
+    current_directory = File.dirname(File.realpath(__FILE__))
+    FeatureCop.blacklist_from_yaml(File.join(current_directory, "sample_tiered_access_list.yml"))
+
+    refute FeatureCop.allows?(:feature1, "user_1")
+    refute FeatureCop.allows?(:feature1, "user_2")
+    refute FeatureCop.allows?(:feature2, "user_3")
+    refute FeatureCop.allows?(:feature2, "user_4")
   end
 end

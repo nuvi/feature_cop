@@ -19,10 +19,14 @@ module FeatureCop
       end
 
       def whitelist
-        @whitelist
+        @whitelist ||= {}
       end
 
       def whitelist=(whitelist)
+        if whitelist.is_a?(Array)
+          @whitelist = { "default" => whitelist }
+          return
+        end
         @whitelist = whitelist
       end
 
@@ -31,8 +35,9 @@ module FeatureCop
       end
 
       def whitelisted?(feature, identifier, options = {})
-        return false if whitelist.nil?
-        whitelist.include?(identifier)
+        feature = "default" if whitelist[feature].nil?
+        return false if whitelist[feature].nil?
+        whitelist[feature].include?(identifier)
       end
     end
   end

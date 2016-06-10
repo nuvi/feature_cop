@@ -19,21 +19,26 @@ module FeatureCop
       end
 
       def all_except_blacklist(feature, identifier, options = {})
-        return true if @blacklist.nil?
+        return true if blacklist.nil?
         !blacklisted?(feature, identifier, options)
       end
 
       def blacklist
-        @blacklist 
+        @blacklist ||= {} 
       end
 
       def blacklist=(blacklist)
+        if blacklist.is_a?(Array)
+          @blacklist = { "default" => blacklist }
+          return
+        end
         @blacklist = blacklist
       end
 
       def blacklisted?(feature, identifier, options = {})
-        return false if blacklist.nil?
-        blacklist.include?(identifier)
+        feature = "default" if blacklist[feature].nil?
+        return false if blacklist[feature].nil?
+        blacklist[feature].include?(identifier)
       end
     end
   end
