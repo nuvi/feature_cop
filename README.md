@@ -29,10 +29,10 @@ Or install it yourself as:
 
 ## Basic Usage - Ruby
 
-Features are configured in your applications ENV per [12-Factor App](http://12factor.net/config) guidelines.
+Features are configured in your applications ENV per [12-Factor App](http://12factor.net/config) guidelines. ENV variable features must be formatted "{feature-name}_FEATURE" to be included.
 
 ```
-MY_COOL_FEATURE = enabled
+MY_COOL_FEATURE = enabled # enabled/disabled NOT true/false
 LOGIN_V2_FEATURE = disabled
 ```
 
@@ -61,6 +61,34 @@ else
    # execute old feature code
 end
 ```
+
+## Using whitelist, blacklist, and Samples
+
+
+```
+# config/feature_cop_whitelist.yml or
+# config/feature_cop_blacklist.yml
+
+development:
+  - DEV-USER-1
+stage:
+  - STG-USER-2
+prod:
+  - USER-123
+  - USER-456
+
+
+# ruby
+
+def controller_method
+  if FeatureCop.allows?(:{my-name}_feature, 'DEV-USER-1') # => true, if whitelisted, false if blacklisted.
+    ... feature details ...
+  end
+end
+
+```
+
+Samples will consistenly allow or disallow users to access a feature, the filtering system is not random, but provides consistent access to the users.
 
 ## Basic Usage - Javascript
 
