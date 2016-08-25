@@ -21,7 +21,6 @@ module FeatureCop
   def self.allows?(feature, identifier = nil, options = {})
     feature_status = ENV["#{feature.to_s.upcase}"]
     return false if feature_status.nil?
-    return false unless self.respond_to?(feature_status)
     self.method(feature_status.downcase).call(feature.to_s, identifier.to_s, options)
   end
 
