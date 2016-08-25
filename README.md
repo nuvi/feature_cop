@@ -1,18 +1,6 @@
 # FeatureCop
 
-FeatureCop is a simple feature toggling system for Ruby. It provides progressive roll out of features. A common (and my opinion, bad) practice is for developers to use branching as feature control.  Feature Branching leads to large pull requests, messy merges, and long integration cycles.  With continous integration and feature toggling everyone can make small, short lived branches off the mainline, continually merge code, and get code in production, even when it isn't ready for launch. 
-
-The following roll out strategies is available:
-
-1. **disabled** - during development, a feature can be completely disabled so it isn't seen or executed.
-2. **whitelist_only** - features can be turned on for specific users or groups.
-3. **sample10** - feature is enabled for roughly 10% of ids (statistically this ranges from 7% - 13%), includes whitelisted ids and excludes blacklisted ids
-4. **sample30** - feature is enabled for roughly 30% of ids (statistically this ranges from 24% - 36%), includes whitelisted ids and excludes blacklisted ids
-5. **sample50** - feature is enabled for roughly 50% of ids (statistically this ranges from 44% - 56%), includes whitelisted ids and excludes blacklisted ids
-
-6. **all_except_blacklist** - feature is enabled for everyone except a specified list of ids.  These customers could be enterprise clients that must be notified before enabling new features, etc.
-6. **enabled** - enabled for all customers.  At this point it is recommended to remove the feature flag from the system since the roll out is complete.
-
+FeatureCop is a simple feature toggling system for Ruby. It provides progressive roll out of features. A common (and my opinion, bad) practice is for developers to use branching as feature control.  Feature Branching leads to large pull requests, messy merges, and long integration cycles.  With continous integration and feature toggling everyone can make small, short lived branches off the mainline, continually merge code, and get code in production, even when it isn't ready for launch.
 
 ## Installation
 
@@ -31,14 +19,30 @@ Or install it yourself as:
 
 Features are configured in your applications ENV per [12-Factor App](http://12factor.net/config) guidelines. ENV variable features must be formatted "{feature-name}_FEATURE" to be included.
 
+The following ENV values are available:
+
+1. **disabled** - during development, a feature can be completely disabled so it isn't seen or executed.
+2. **whitelist_only** - features can be turned on for specific users or groups.
+3. **sample10** - feature is enabled for roughly 10% of ids (statistically this ranges from 7% - 13%), includes whitelisted ids and excludes blacklisted ids
+4. **sample30** - feature is enabled for roughly 30% of ids (statistically this ranges from 24% - 36%), includes whitelisted ids and excludes blacklisted ids
+5. **sample50** - feature is enabled for roughly 50% of ids (statistically this ranges from 44% - 56%), includes whitelisted ids and excludes blacklisted ids
+
+6. **all_except_blacklist** - feature is enabled for everyone except a specified list of ids.  These customers could be enterprise clients that must be notified before enabling new features, etc.
+6. **enabled** - enabled for all customers.  At this point it is recommended to remove the feature flag from the system since the roll out is complete.
+
+
 ```
-MY_COOL_FEATURE = enabled # enabled/disabled NOT true/false
-LOGIN_V2_FEATURE = disabled
+# .env
+
+MY_COOL_FEATURE = enabled # All users will access this feature
+LOGIN_V2_FEATURE = disabled # No users will access this feature
+X_FEATURE = whitelist_only # Only whitelisted users will access this feature
+Y_FEATURE = all_except_blacklist # All users except blacklist will access this feature
+Z_FEATURE = sample10 # A random, but persistent, 10% of users will access this features
 ```
 
 NOTE:
 Adding key values pairs to your ENV can be done in a number of ways. The above way is using .env file in conjuction with the [dot-env gem](https://github.com/bkeepers/dotenv)
-
 
 Use FeatureCop.allows? in your ruby code
 
@@ -51,7 +55,7 @@ else
 end
 ```
 
-You can also pass a string identifier to FeatureCop.  Identifiers can be anything but are typicall a user_id or a group_id.  Identifiers are used for the whitelist, sample10, sample30, sample50, and blacklist feature types.
+You can also pass a string identifier to FeatureCop.  Identifiers can be anything but are typicall a user_id or a group_id.  Identifiers must be used for the whitelist, sample10, sample30, sample50, and blacklist feature types.
 
 ```ruby
 
@@ -66,6 +70,9 @@ end
 
 
 ```
+# .env
+NEW_X_FEATURE = whitelist_only
+
 # config/feature_cop_whitelist.yml or
 # config/feature_cop_blacklist.yml
 
@@ -81,7 +88,7 @@ prod:
 # ruby
 
 def controller_method
-  if FeatureCop.allows?(:{my-name}_feature, 'DEV-USER-1') # => true, if whitelisted, false if blacklisted.
+  if FeatureCop.allows?(:new_x_feature, 'DEV-USER-1') # => true
     ... feature details ...
   end
 end
@@ -136,8 +143,6 @@ Because javascript patterns & frameworks vary wildly and change often, we have o
 Boom! Now you have feature flags!
 
 For more advanced usage, [see our wiki](https://github.com/nuvi/feature_cop/wiki)!
-
-
 
 
 ## Contributing
