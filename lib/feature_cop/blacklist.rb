@@ -17,6 +17,7 @@ module FeatureCop
         raise "#{file} not found!" unless ::File.exist?(absolute_path)
         self.blacklist = ::YAML.load_file(absolute_path)[env]
       end
+      alias :from_yaml :blacklist_from_yaml
 
       def all_except_blacklist(feature, identifier, options = {})
         return true if blacklist.nil?
