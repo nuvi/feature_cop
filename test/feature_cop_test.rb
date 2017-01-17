@@ -9,8 +9,19 @@ class FeatureCopTest < Minitest::Test
   def test_features_are_taken_from_env
     ENV["TEST_FEATURE"] = "enabled"
     FeatureCop.reset_features
-    assert_equal FeatureCop.features["TEST_FEATURE"], "enabled"
+    assert_equal FeatureCop.features["test_feature"], "enabled"
     assert_nil FeatureCop.features["SOME_KEY"]
+  end
+
+  def test_features_match_as_json_and_allows?
+    ENV["JSON_FEATURE"] = "whitelist_only"
+    FeatureCop.reset_features
+
+    whitelist_yaml = { "json_feature" => "TESTING_ATTENTION_PLEASE" }
+    FeatureCop.whitelist = whitelist_yaml
+
+    assert FeatureCop.allows?(:json_feature, "TESTING_ATTENTION_PLEASE")
+    assert FeatureCop.as_json("TESTING_ATTENTION_PLEASE")["jsonFeature"]
   end
 
   def test_features_can_be_converted_to_json
