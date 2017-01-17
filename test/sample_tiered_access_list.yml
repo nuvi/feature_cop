@@ -1,9 +1,9 @@
 development:
-  feature1:
+  feature1_feature:
   - user_1
   - user_2
 
-  feature2:
+  feature2_feature:
   - user_3
   - user_4
 

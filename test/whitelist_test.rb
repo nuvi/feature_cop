@@ -4,6 +4,7 @@ class WhitelistTest < Minitest::Test
 
   def test_whitelisted_features_are_true_when_they_are_in_the_white_list
     ENV["WHITELIST_FEATURE"] = "whitelist_only"
+    FeatureCop.reset_features
     FeatureCop.whitelist = []
     refute FeatureCop.allows?(:whitelist_feature, "GOOD_GUY")
 
@@ -15,6 +16,7 @@ class WhitelistTest < Minitest::Test
     ENV["SAMPLE10_FEATURE"] = "sample10"
     ENV["SAMPLE30_FEATURE"] = "sample30"
     ENV["SAMPLE50_FEATURE"] = "sample50"
+    FeatureCop.reset_features
 
     FeatureCop.whitelist = ["GOOD_GUY"] 
 
@@ -26,6 +28,7 @@ class WhitelistTest < Minitest::Test
 
   def test_whitelist_can_be_configured_from_yml_with_custom_path
     ENV["SAMPLE10_FEATURE"] = "sample10"
+    FeatureCop.reset_features
     current_directory = File.dirname(File.realpath(__FILE__))
     FeatureCop.whitelist_from_yaml(File.join(current_directory, "sample_access_list.yml"))
     assert FeatureCop.whitelist["default"].include?("user_1")
@@ -34,16 +37,17 @@ class WhitelistTest < Minitest::Test
 
 
   def test_whitelist_configuration_can_include_multiple_features
-    ENV["FEATURE1"] = "whitelist_only"
-    ENV["FEATURE2"] = "whitelist_only"
+    ENV["FEATURE1_FEATURE"] = "whitelist_only"
+    ENV["FEATURE2_FEATURE"] = "whitelist_only"
+    FeatureCop.reset_features
 
     current_directory = File.dirname(File.realpath(__FILE__))
     FeatureCop.whitelist_from_yaml(File.join(current_directory, "sample_tiered_access_list.yml"))
 
-    assert FeatureCop.allows?(:feature1, "user_1")
-    assert FeatureCop.allows?(:feature1, "user_2")
-    assert FeatureCop.allows?(:feature2, "user_3")
-    assert FeatureCop.allows?(:feature2, "user_4")
+    assert FeatureCop.allows?(:feature1_feature, "user_1")
+    assert FeatureCop.allows?(:feature1_feature, "user_2")
+    assert FeatureCop.allows?(:feature2_feature, "user_3")
+    assert FeatureCop.allows?(:feature2_feature, "user_4")
   end
 
 end
