@@ -1,3 +1,6 @@
+test:
+  - user_1
+  - user_2
 development:
   - user_1
   - user_2

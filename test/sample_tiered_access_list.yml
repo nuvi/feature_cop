@@ -1,9 +1,18 @@
-development:
-  feature1:
+test:
+  feature1_feature:
   - user_1
   - user_2
 
-  feature2:
+  feature2_feature:
+  - user_3
+  - user_4
+
+development:
+  feature1_feature:
+  - user_1
+  - user_2
+
+  feature2_feature:
   - user_3
   - user_4
 
